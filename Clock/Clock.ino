@@ -8,6 +8,9 @@ void setup() {
   // put your setup code here, to run once:
   lcd.begin(16,2);
   lcd.print("Current Time :");
+
+  pinMode(8, INPUT);        // pins used for manual settings
+  pinMode(9, INPUT);        // ***
 }
 
 void loop() {
