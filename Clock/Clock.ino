@@ -3,6 +3,7 @@
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 unsigned long tot_time_sec, hour, minute, second;
+unsigned long time_set = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -15,13 +16,23 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  tot_time_sec = millis()/1000;                         //time in seconds
+
+  if(digitalRead(8)==HIGH){
+    time_set = time_set + 3600;               // setting the hours (1h = 3600s)
+    delay(200);
+  }
+  if(digitalRead(9)==HIGH){
+    time_set = time_set + 60;                // setting the minutes (1min = 60s)
+    delay(200);
+  }
+
+  
+  tot_time_sec = ((millis()/1000) + time_set) % (86400) ;                   //time in seconds
   hour =  tot_time_sec / (60*60);
   minute = (tot_time_sec % (60*60)) / (60);
   second = (tot_time_sec % (60*60)) % (60);
 
   lcd.setCursor(0, 1);                                  //fixes overlapping digits
-    lcd.print(hour);
   if(hour>9){
     lcd.print(hour);
   } else {
@@ -50,6 +61,5 @@ void loop() {
     lcd.print("0");
     lcd.setCursor(7, 1);
     lcd.print(second);
-  }                                 // end of overlapping digits fix
-  
+  }                                 // end of overlapping digits fix 
 }
